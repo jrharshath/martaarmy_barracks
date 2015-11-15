@@ -1,0 +1,319 @@
+body {
+	margin: 0;
+	font-family: "Sweet Sans Pro", "Source Sans Pro", "Montserrat", sans-serif;
+	font-size:15.5pt;
+}
+#italic,
+.alt-lang
+{
+	font-style: italic;
+}
+#bold,
+/*.bus .title ul.places li,*/
+.bus table.schedule td ul li.pm
+{
+	font-weight:bold;
+}
+#right-align-text,
+h1,
+h2
+{
+	text-align:right;
+}
+
+#reduced-line-height,
+h2,
+th,
+ul.places,
+.disclaimer,
+.footer .QR/*,
+.adoptPitch*/
+{
+	line-height:90%;
+}
+#float-left-style,
+.float-left,
+.header,
+.header .logo,
+.bus,
+.bus .title,
+.bus .title h3,
+/*.bus .title ul.places,*/
+.footer .logo,
+.footer .ack
+{
+	float:left;
+}
+#float-right-style,
+.float-right,
+.QR,
+.QR p,
+.QR img
+{
+	float:right;
+}
+
+#clear-floats-style,
+.clear-floats,
+.schedule,
+.buses,
+.header,
+.disclaimer
+{
+	clear:both;
+}
+#fine-print-text,
+.disclaimer,
+.footer,
+{
+	font-size:70%;
+}
+
+#header-height,
+.header,
+.header .logo
+{
+	height:6.3em;
+}
+
+#paper-left-margin,
+.bus .title h3,
+.disclaimer,
+.ack,
+.ack1
+{
+	padding-left: 15px;
+}
+
+#paper-right-margin,
+.QR,
+h1,
+h2,
+.soldierName
+{
+	padding-right: 15px;
+}
+
+#width-100pc,
+.header,
+.footer,
+.bus .title
+/*.bus table.schedule*/
+{
+	width:100%;
+}
+#white-text,
+.bus .title h3,
+h1
+{
+	color: #FFFFFF;
+}
+
+.page {
+	height: 1100px;
+	width:1700px;
+	position: relative;
+	overflow:hidden;
+}
+.header {
+	background-color: #000;
+	/*color: #fff;*/
+	-webkit-print-color-adjust: exact;
+}
+
+h1, h2 {
+	/*margin: 0 20px 10px 20px;*/
+	margin-top:0px;
+	margin-bottom:10px;
+}
+h2 {
+	font-size: 92%; font-weight: normal; padding-top: 0px; margin-top:-2px;
+	color:#D0D0D0;
+}
+h1 { 
+	font-size: 200%; 
+	padding-top:0px;
+}
+.buses {
+	/*margin:auto;*/
+	overflow:hidden;
+	margin-right:-10px;
+}
+.bus {
+	/*width: 320px;*/
+	border-right: 2px solid #aaa;
+	border-bottom: 2px solid #aaa;
+	/*margin-left: -1px; */
+	/*margin-right:-1px;*/
+}
+.bus .title {
+	height: 4.5em;
+	background-color: #ddd; 
+	padding-top: 6pt;
+	padding-bottom: 4pt;
+	/*border-left:1px solid #aaa;*/
+}
+.bus .title.MARTA {
+	background-color: #00aeef; 
+}
+.bus .title.CCT {
+	background-color: #cc66ff; 
+}
+.bus .title.GCT {
+	background-color: #c41013; 
+}
+.bus .title.GRTA {
+	background-color: #66cc99; 
+}
+.bus .title h3 {
+	font-size:300%;
+	margin-top: 0;
+	margin-bottom:0px;
+	margin-right:0.4em;
+	height:1.5em;
+}
+.bus .title ul.places {
+	padding: 0;
+	margin: 0;
+	font-size:145%;
+}
+.bus .title ul.places li {
+	list-style-type:none;
+}
+.bus .title ul.places li.origin-destination {
+	font-weight:bold;
+	white-space: nowrap;
+}
+.bus .title ul.places li.waypoints {
+	font-size:85%;
+	padding-top:3px;
+}
+.bus table {
+	border-collapse:collapse;
+}
+.bus table.schedule {
+	margin-left: auto;
+	margin-right: auto;
+	/*border-left:1px solid #aaa;
+	border-bottom:1px solid #aaa;*/
+}
+.bus table.schedule th {
+	/*width: 33%;*/
+	text-align: left;
+	padding: 5px 0 5px 5px;
+	font-weight:normal;
+}
+.bus table.schedule th, .bus table.schedule td {
+	border-right: 1px solid #ccc;
+	vertical-align: top;
+}
+.bus table.schedule th:last-child, .bus table.schedule td:last-child {
+	border-right: none;
+}
+.bus table.schedule td ul {
+	font-size: 100%;
+	list-style-type: none;
+	padding-left: 0px;
+	padding-right:10px;
+	margin-top:2pt;
+	margin-bottom:2pt;
+	white-space: nowrap;
+}
+.bus table.schedule td ul li {
+	white-space: nowrap;
+	/*float: left;
+	clear: left;*/
+	/*line-height: 1.px;*/
+}
+.bus table.schedule td ul li span {
+	display: inline-block;
+	/*float: left;*/
+	text-align:right;
+	width: 2.4em;
+}
+.bus table.schedule td ul li span:first-child {
+	width: 4.5em;
+}
+.disclaimer {
+	font-size:90%;
+}
+.footer {
+	clear: both;
+	/*margin-top:15px;*/
+	bottom: 0px;
+	left: 0px;
+	position: absolute;
+	font-size:85%;
+}
+.footer .QR img
+{
+	/*float: left;*/
+	height: 5em;
+	/*width: 75px;*/
+}
+#footer-image-height,
+.footer .logo,
+.ack
+{
+	/*float: left;*/
+	height: 5em;
+	/*width: 75px;*/
+}
+.footer .ack img {
+	margin: 0 10px 0px 0;
+	/*font-size: 12px;
+	margin-right: 20px;*/
+	/*float: left;*/
+	/*width: 60%;*/
+}
+.footer .QR {
+	/*float: right;*/
+	/*text-align: right;*/
+	/*font-size: 12px;
+	 margin-top:10px;*/
+	/*margin-right: 60px;*/
+	/*width:35%*/
+}
+.footer   .big{
+	font-size: 180%;
+}
+.footer  .small{
+	font-size: 80%;
+}
+.footer .QR p, .footer .ack p {
+	margin: 0;
+	padding-top:0px;
+}
+.hour span {
+	/*text-align:right;*/
+	/*margin-right:4pt;*/
+}
+.ampm {
+	font-size:80%;
+}
+.adoptPitch {
+	color: #aaa;
+	text-align: center;
+	line-height:140%;
+	float:right;
+	font-size:140%;
+	
+	border: 2px dashed #aaa; margin-right:10px; padding:3px 15px; margin-top:3px;
+}
+.adopter {
+	font-size:200%;
+	font-weight:bold;
+}
+#top-hole, #bottom-hole {
+	position:absolute;
+	text-align:center;
+	width:100%;
+	height:3em;
+	color:#CCFF00;
+}
+#bottom-hole {
+	bottom:0;
+}
+#top-hole {
+	top:3.5em;
+}
