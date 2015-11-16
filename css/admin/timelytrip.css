@@ -55,6 +55,7 @@
 }
 
 #soldiers-table td span.stop .id { display: none; }
+#soldiers-table td span.stop .adoptedtime { display: none; }
 #soldiers-table td span.stop .stopid { display: none; }
 #soldiers-table td span.stop .agency { display: none; }
 #soldiers-table td span.stop .given { display: none; }

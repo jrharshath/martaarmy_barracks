@@ -1,5 +1,15 @@
-DB DEPLOYMENT
-* change datatype of users->joindate to datetime from date
-* drop column users->password
-* drop column points
-* add adoptedstops table, run transform_stops.php
+
+------
+FINDING DUPLICATE STOPS GIVEN TO PEOPLE
+------
+select s.stopid, s.given, u.name, u.email, s.stopname from users u
+inner join adoptedstops s 
+on u.id = s.userid
+inner join (
+    select agency, stopid, count(*) as dupecount
+    from adoptedstops
+    WHERE agency is not null AND stopid is not null
+    GROUP BY agency, stopid
+    HAVING dupecount > 1
+) ds on s.agency = ds.agency and s.stopid = ds.stopid
+order by s.stopid

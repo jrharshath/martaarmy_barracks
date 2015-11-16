@@ -150,7 +150,7 @@ $stats = getTimelyTripStats($soldiers);
                                         <thead>
                                             <tr>
                                                 <th>Select <br/><a id='select-all-soldiers' href='#'>All</a> | <a id='select-none-soldiers' href='#'>None</a></th>
-                                                <th>Join Date <br/>&amp; time</th>
+                                                <th>Updated Date <br/>&amp; time</th>
                                                 <th>Name</th>
                                                 <th>Stops without signs<br/> <a id='select-nosign-all-soldiers' href='#'>All</a> | <a id='select-nosign-none-soldiers' href='#'>None</a></th>
                                                 <th>Stops with signs given <br/> <a id='select-sign-notask-all-soldiers' href='#'>All</a> | <a id='select-sign-notask-none-soldiers' href='#'>None</a></th>
@@ -159,13 +159,16 @@ $stats = getTimelyTripStats($soldiers);
                                         </thead>
                                         <tbody>
 <?php
+    function formatDateTime($dt) { return $dt->format('j-M-Y') . "<br/>" . $dt->format('g:iA'); }
+
     foreach($soldiers as $s) {
         $userid = $s->id;
         $name = $s->name;
         $email = $s->email;
         $phone = $s->phone;
         $notes = $s->notes;
-        $joindate = $s->joindate->format('j-M-Y') . "<br/>" . $s->joindate->format('g:iA');
+        $joindate = formatDateTime($s->joindate);
+        $updatedate = formatDateTime($s->updatedate);
 
         $notesclass = '';
         if(!is_null($notes)) {
@@ -186,7 +189,10 @@ $stats = getTimelyTripStats($soldiers);
         echo <<<SOLDIER_ROW
                                             <tr data-userid='$userid'>
                                                 <td class='selection'><input type='checkbox'/></td>
-                                                <td class='join-date'>$joindate</td>
+                                                <td class='dates'>
+                                                    <span class='update-date'>$updatedate</span>
+                                                    <span class='join-date'>$joindate</span>
+                                                </td>
                                                 <td class='user-data $notesclass'>
                                                     <a class='soldier-name' href='#'>$name</a>
                                                     <span class='email'>$email</span>
@@ -208,6 +214,7 @@ SOLDIER_ROW;
         }
 
         $id = $st->id;
+        $adoptedtime = $st->adoptedtime->format('j-M-Y/g:iA');
         $stopid = $st->stopid;
         $agency = $st->agency;
         $stopgiven = $st->given ? 'true' : 'false';
@@ -226,6 +233,7 @@ SOLDIER_ROW;
         return <<<STOP
         <span class='stop $extraclass'>
             <span class='id'>$id</span>
+            <span class='adoptedtime'>$adoptedtime</span>
             <span class='name'>$stopname</span>
             <span class='stopid'>$stopid</span>
             <span class='agency'>$agency</span>
@@ -267,6 +275,7 @@ STOP;
                             <span class="error-message"></span>
                             <input type='text' class='form-control'/>
                         </div>
+                        <p><b>Adopted date/time:</b> <span class='adoptedtime'></span></p>
                         <div class='form-group float-label stopid'>
                             <label>Stop Id</label>
                             <span class="error-message"></span>

@@ -3,6 +3,7 @@ $(function() {
 
 	$(document).on('click', '#soldiers-table td span.stop', function() {
 		var $stop = $(this);
+		var adoptedtime = $stop.find('span.adoptedtime').text();
 		var stopname = $stop.find('span.name').text();
 		var stopid = $stop.find('span.stopid').text();
 		var agency = $stop.find('span.agency').text().trim();
@@ -12,6 +13,7 @@ $(function() {
 
 		var $m = $('#stopdetail-modal');
 
+		$m.find('.adoptedtime').text(adoptedtime);
 		$m.find('.stopname input').val(stopname).refreshLabel();
 		$m.find('.stopid input').val(stopid).refreshLabel();
 		$m.find('.agency select').val(agency);
@@ -121,10 +123,16 @@ $(function() {
 		var stopid = $m.find('.stopid input').val().trim();
 		var agency = $m.find('.agency select').val();
 
-		if(name.length==0 || stopid.length==0 || agency.length==0) {
-			alert('Stop ID, Agency or Name on Sign missing. Add them and "Update" the stop first.');
+		if(stopid.length==0 || agency.length==0) {
+			alert('The stopid and agency needs to be set first.');
 			return;
 		}
+
+		if(name.length==0) {
+			alert('Select a name on the sign after checking the "Given" box.');
+			return;
+		}
+
 
 		var url = '../bussign/index_army.php?agency=MARTA&sid='+stopid+'&stopNameOverride=&adopter='+name+'&rank=&weblogo=';
 		window.open(url);

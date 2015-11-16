@@ -15,7 +15,7 @@ function validateAdminSession($adminsid) {
 }
 
 class Soldier {
-	var $id, $name, $email, $phone, $notes, $joindate;
+	var $id, $name, $email, $phone, $notes, $joindate, $updatedate;
 	var $stops, $stops_given, $stops_notgiven;
 
 	function __construct($id, $name, $email, $phone, $notes, $joindate)
@@ -26,6 +26,7 @@ class Soldier {
 		$this->phone = $phone;
 		$this->notes = $notes;
 		$this->joindate = $joindate;
+		$this->updatedate = $joindate;
 		
 		$this->stops = array();
 		$this->stops_given = array();
@@ -39,14 +40,17 @@ class Soldier {
 		} else {
 			$this->stops_notgiven[] = $stop;
 		}
+
+		$this->updatedate = $stop->adoptedtime;
 	}
 }
 
 class Stop {
-	var $id, $stopname, $stopid, $agency, $given, $nameonsign, $abandoned;
+	var $id, $adoptedtime, $stopname, $stopid, $agency, $given, $nameonsign, $abandoned;
 
-	function __construct($id, $stopname, $stopid, $agency, $given, $nameonsign, $abandoned) {
+	function __construct($id, $adoptedtime, $stopname, $stopid, $agency, $given, $nameonsign, $abandoned) {
 		$this->id = $id;
+		$this->adoptedtime = $adoptedtime;
 		$this->stopname = $stopname;
 		$this->stopid = $stopid;
 		$this->agency = $agency;
@@ -61,7 +65,7 @@ function getTimelyTripSoldiers() {
 
 	$stmt = $_DB->prepare(
 		"SELECT u.id, u.name, u.email, u.phone, u.notes, u.joindate, ".
-		"s.id, s.stopname, s.stopid, s.agency, s.given, s.nameonsign, s.abandoned ".
+		"s.id, s.adoptedtime, s.stopname, s.stopid, s.agency, s.given, s.nameonsign, s.abandoned ".
 		"FROM users u LEFT JOIN adoptedstops s ON u.id = s.userid ".
 		"ORDER BY u.joindate DESC");
 	$stmt->execute();
@@ -92,11 +96,18 @@ function getTimelyTripSoldiers() {
 		if(is_null($row[6])) { continue; }
 
 		$stop = new Stop(
-			$row[6], $row[7], $row[8], $row[9], booleanFromDb($row[10]), $row[11], booleanFromDb($row[12]));
+			$row[6], dateTimeFromDb($row[7]), $row[8], $row[9], 
+			$row[10], booleanFromDb($row[11]), $row[12], booleanFromDb($row[13]));
 
 		$soldier->addStop($stop);		
 	}	
-	
+	function cmpSoldierByUpdateDate($s1, $s2) {
+		if($s1->updatedate > $s2->updatedate) { return -1; }
+		if($s1->updatedate == $s2->updatedate) { return -1; }
+		if($s1->updatedate < $s2->updatedate) { return 1; }
+	}
+
+	usort($soldiers, "cmpSoldierByUpdateDate");
 	return $soldiers;
 }
 
