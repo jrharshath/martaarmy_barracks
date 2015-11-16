@@ -33,7 +33,6 @@ $(function() {
 	$('#stopdetail-modal .stopdetail-submit').click(function() {
 		var $m = $('#stopdetail-modal');
 		
-		var userid = parseInt($curr_modal_stop.closest('tr').attr('data-userid'));
 		var id = $curr_modal_stop.find('span.id').text();
 
 		var stopname = $m.find('.stopname input').val();
@@ -46,7 +45,8 @@ $(function() {
 		var nameonsign = $m.find('.nameonsign input').val().trim();
 		var abandoned = $m.find('.abandoned input').prop('checked');
 
-		var data = { userid: userid, id: id,
+		var data = { 
+			id: id,
 			stopname: stopname,
 			stopid: stopid,
 			agency: agency,
@@ -131,66 +131,7 @@ $(function() {
 	});
 
 	$('#new-soldier-button').click(function() {
-		var $m = $('#newsoldier-modal');
-
-		$m.find('#soldiername input').val('');
-		$m.find('#soldieremail input').val('');
-		$m.find('#soldierbusstop input').val('');
-		$m.find('#soldiernotes input').val('');
-		$m.find('#soldierphone input').val('');
-
-		$m.modal();
-	});
-
-	$('#newsoldier-submit').click(function() {
-		var $m = $('#newsoldier-modal');
-		
-		var name = $m.find('#soldiername input').val().trim();
-		var email = $m.find('#soldieremail input').val().trim();
-		var phone = $m.find('#soldierphone input').val().trim();
-		var stoptoadopt = $m.find('#soldierbusstop input').val().trim();
-		var notes = $m.find('#soldiernotes input').val().trim();
-
-		var data = {
-			name: name, email: email, phone: phone, stoptoadopt: stoptoadopt, notes: notes
-		};
-
-		$.ajax({
-		  url: "../ajax/admin/register-timelytrip-soldier.php",
-		  type: "POST",
-		  data: data,
-		  dataType: 'json',
-		  
-		  success: function(d) {
-			switch(d.status) {
-			case 'success':
-				
-				alert('done! refresh your window.');	
-				$m.modal('hide');
-				break;
-
-			case 'bademail':
-				alert('The email address looks invalid');
-				break;
-
-			case 'already':
-				alert('The user is already registered by this email!');
-				break;
-
-			case 'failure':
-			case 'failjoinop':
-				alert('Some strange error has occurred. Make note of this user on a spreadsheet and send it to Harshath.');
-				break;
-
-			default:
-				console.log(d);
-				alert('Oops, an error occurred: '+d.status);
-			}
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log(textStatus, errorThrown);
-			alert('Oops, an error occurred.');
- 		}});
+		$('#newsoldier-modal').modal();
 	});
 
 	$curr_modal_soldier = null;
@@ -324,7 +265,6 @@ $(function() {
 		$m.find('.soldieremail input').val(email).refreshLabel();
 		$m.find('.soldierphone input').val(phone).refreshLabel();
 		$m.find('.soldiernotes textarea').val(notes).refreshLabel();
-		$m.find('.soldierjoindate input').val(joindate).refreshLabel();
 
 		$curr_modal_soldier = $details;
 
@@ -342,9 +282,8 @@ $(function() {
 		var email = $m.find('.soldieremail input').val();
 		var phone = $m.find('.soldierphone input').val();
 		var notes = $m.find('.soldiernotes textarea').text();
-		var joindate = $m.find('.soldierjoindate input').val();
 
-		var data = { name: name, email: email, phone: phone, notes: notes, joindate: joindate };
+		var data = { name: name, email: email, phone: phone, notes: notes };
 
 		$.ajax({
 		  url: "../ajax/admin/update-soldierdetail.php",

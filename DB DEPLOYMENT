@@ -1,2 +1,5 @@
 DB DEPLOYMENT
 * change datatype of users->joindate to datetime from date
+* drop column users->password
+* drop column points
+* add adoptedstops table, run transform_stops.php

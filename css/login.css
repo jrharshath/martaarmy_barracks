@@ -10,6 +10,7 @@ h1, h2, h3, h4, h5, p, span, div {
 }
 .login-page-content {
   padding-bottom: 30px;
+  text-align: center;
 }
 .shader {
   width: 100%;
@@ -22,19 +23,14 @@ h1, h2, h3, h4, h5, p, span, div {
 .big-logo-image {
   height: 100px;
   margin: 50px auto 10px auto;
-  float: left;
-  display: block;
 }
 h1.title {
   color: #fff;
   line-height: 120px;
-  margin: 40px 0 0 50px;
   font-size: 28px;
   text-transform: uppercase;
   letter-spacing: 10px;
-  
   font-weight: lighter;
-  float: left;
 }
 h2 { 
   font-family: Lato, sans-serif;

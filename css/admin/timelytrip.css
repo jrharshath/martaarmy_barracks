@@ -36,6 +36,7 @@
 }
 
 #soldiers-table td.user-data span.email { display: none; }
+#soldiers-table td.user-data span.phone { display: none; }
 #soldiers-table td.user-data span.notes { display: none; }
 
 #soldiers-table td.user-data.hasnotes { position: relative; }

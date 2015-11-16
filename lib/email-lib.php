@@ -2,7 +2,9 @@
 
 require 'phpmailer/PHPMailerAutoload.php';
 
-function sendWelcomeEmail($email, $name) {
+function sendWelcomeEmail() {
+	return;
+	
 	$mail = new PHPMailer;
 
 	$mail->isSMTP();
@@ -32,6 +34,10 @@ function sendWelcomeEmail($email, $name) {
 		"The MARTA Army";
 
 	return $mail->send();
+}
+
+function sendNewStopsAdoptedEmail() {
+
 }
 
 ?>

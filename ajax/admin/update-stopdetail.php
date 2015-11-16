@@ -11,14 +11,13 @@ init_db();
 
 include('../../lib/admindb.php');
 
-if(!isset($_POST['userid']) || !isset($_POST['id']) || !isset($_POST['stopname']) 
+if(!isset($_POST['id']) || !isset($_POST['stopname']) 
 	|| !isset($_POST['stopid']) || !isset($_POST['agency']) 
 	|| !isset($_POST['given']) || !isset($_POST['nameonsign']) || !isset($_POST['abandoned']) ) {
 
 	finishWith('missing');
 }
 
-$userid = intval($_POST['userid']);
 $id = trim($_POST['id']);
 
 $stopname = trim($_POST['stopname']);
@@ -36,7 +35,7 @@ if( $given && empty($nameonsign) ) {
 	finishWith('given_nameonsign');
 }
 
-$result = updateAdoptedStop($userid, $id, $stopname, $stopid, $agency, $given, $nameonsign, $abandoned);
+$result = updateAdoptedStop($id, $stopname, $stopid, $agency, $given, $nameonsign, $abandoned);
 
 if($result===TRUE) {
 	if($given) {

@@ -54,62 +54,14 @@ if(isset($_COOKIE["sid"])) {
     <div class="container-fluid login-page-container">
         <div class='shader'></div>
         <div class="row">
-            <div class="col-xs-12 col-md-8 col-md-offset-2 login-page-content">
+            <div class="col-xs-12 login-page-content">
                 <img class="big-logo-image" src="images/marta-army-white.png" alt="The MARTA Army"/>
                 <h1 class="title">Barracks</h1>
             </div>
         </div>
 
         <div class="row" id='login-page-content'>
-            <div class='col col-xs-12 col-md-offset-2 col-md-4'>
-                <h2>Login</h2>
-                <form id='login-form' action='ajax/login.php' method='POST'>
-                    <div class='form-group float-label'>
-                        <label for='email'>Email address</label>
-                        <span class="error-message"></span>
-                        <input type='text' id='email' name='email' class='form-control'/>
-                    </div>
-                    <div class='form-group float-label'>
-                        <label id='password-label' for='password'>Password </label>
-                        <span class="error-message"></span>
-                        <input type='password' id='password' name='password' class='form-control'/>
-                    </div>
-                    <button type="submit" id='submit-button' class="btn btn-success">Login</button>
-                    <!-- todo: forgot password, register -->
-                    <!-- todo make separate register page, embed in marta army website -->
-                    <!-- todo make registration form for on-spot sign up tomorrow -->
-                </form>
-            </div>
-
-            <div class='col col-xs-12 col-md-4'>
-                <h2>Sign Up</h2>
-                <p>
-                By joining the army, you can help make public transit better in your own neighborhoods. You can read all about it on our <a href='http://martaarmy.org/' target='_blank'>website</a>.<br/><br/>
-                Not a soldier in the MARTA Army yet? <br/><br/>
-                <a href='#' class='btn btn-success' id='join-now-btn'>Join the army now!</a><br/><br/>
-                </p>
-                <form id='signup-form' action='ajax/event-signup.php' method='POST'>
-                    <div class='form-group float-label'>
-                        <label for='name'>Name</label>
-                        <span class="error-message"></span>
-                        <input type='text' id='reg-name' name='name' class='form-control'/>
-                    </div>
-                    <div class='form-group float-label'>
-                        <label for='email'>Email address</label>
-                        <span class="error-message"></span>
-                        <input type='text' id='reg-email' name='email' class='form-control'/>
-                    </div>
-                    <div class='form-group float-label'>
-                        <label for='password'>Create a password</label>
-                        <span class="error-message"></span>
-                        <input type='password' id='reg-password' name='password' class='form-control'/>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-success">Sign Up</button>
-                </form>
-
-                <p id='msg'></p>
-            </div>
+            
         </div>
     </div>
     

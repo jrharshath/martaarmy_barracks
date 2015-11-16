@@ -127,13 +127,8 @@ $stats = getTimelyTripStats($soldiers);
 
                     <div class="col-sm-4">
                         <table class="table table-bordered table-hover table-striped">
-                            <tr><td colspan=2>Stops without signs</td><td><?php echo $stats['num_nosign']; ?></td></tr>
-                            <tr><td rowspan=3>Stops pending audit..</td><td>With no tasks</td><td>--</td></tr>
-                            <tr><td>With pending tasks</td><td>--</td></tr>
-                            <tr><td>With overdue tasks</td><td>--</td></tr>
-                            <tr><td rowspan=3>Up-to-date Stops</td><td>With no tasks</td><td>--</td></tr>
-                            <tr><td>With pending tasks</td><td>--</td></tr>
-                            <tr><td>With overdue tasks</td><td>--</td></tr>
+                            <tr><td>Stops without signs</td><td><?php echo $stats['num_notgiven']; ?></td></tr>
+                            <tr><td>Stops with signs given</td><td><?php echo $stats['num_given']; ?></td></tr>
                         </table>
                     </div>
                 </div>
@@ -154,29 +149,23 @@ $stats = getTimelyTripStats($soldiers);
                                     <table id='soldiers-table' class="table table-bordered table-hover table-striped">
                                         <thead>
                                             <tr>
-                                                <th rowspan=2>Select <br/><a id='select-all-soldiers' href='#'>All</a> | <a id='select-none-soldiers' href='#'>None</a></th>
-                                                <th rowspan=2>Join Date <br/>&amp; time</th>
-                                                <th rowspan=2>Name</th>
-                                                <th rowspan=2>Stops without signs<br/> <a id='select-nosign-all-soldiers' href='#'>All</a> | <a id='select-nosign-none-soldiers' href='#'>None</a></th>
-                                                <th colspan=3>Stops with pending audit, having...</th>
-                                                <th rowspan=2>Up-to-date stops</th>
-                                                <th rowspan=2>Actions</th>
-                                            </tr>
-                                            <tr>
-                                                <th>no tasks<br/> <a id='select-sign-notask-all-soldiers' href='#'>All</a> | <a id='select-sign-notask-none-soldiers' href='#'>None</a></th>
-                                                <th>pending tasks</th>
-                                                <th>overdue tasks</th>
+                                                <th>Select <br/><a id='select-all-soldiers' href='#'>All</a> | <a id='select-none-soldiers' href='#'>None</a></th>
+                                                <th>Join Date <br/>&amp; time</th>
+                                                <th>Name</th>
+                                                <th>Stops without signs<br/> <a id='select-nosign-all-soldiers' href='#'>All</a> | <a id='select-nosign-none-soldiers' href='#'>None</a></th>
+                                                <th>Stops with signs given <br/> <a id='select-sign-notask-all-soldiers' href='#'>All</a> | <a id='select-sign-notask-none-soldiers' href='#'>None</a></th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
 <?php
     foreach($soldiers as $s) {
-        $userid = $s['id'];
-        $name = $s['name'];
-        $email = $s['email'];
-        $phone = $s['phone'];
-        $notes = $s['notes'];
-        $joindate = $s['joindate']->format('j-M-Y') . "<br/>" . $s['joindate']->format('g:iA');
+        $userid = $s->id;
+        $name = $s->name;
+        $email = $s->email;
+        $phone = $s->phone;
+        $notes = $s->notes;
+        $joindate = $s->joindate->format('j-M-Y') . "<br/>" . $s->joindate->format('g:iA');
 
         $notesclass = '';
         if(!is_null($notes)) {
@@ -185,28 +174,13 @@ $stats = getTimelyTripStats($soldiers);
         }
 
         $notgivenhtml = '';
-        foreach($s['stops_notgiven'] as $st) {
+        foreach($s->stops_notgiven as $st) {
             $notgivenhtml .= getStopHtml($st, 'not-given');
         }
 
-        $notaskshtml = '';
-        foreach($s['stops_notasks'] as $st) {
-            $notaskshtml .= getStopHtml($st, 'no-tasks');
-        }
-
-        $pendingtaskshtml = '';
-        foreach($s['stops_pendingtasks'] as $st) {
-            $pendingtaskshtml .= "<span data-index='0' class='stop'>Ponce.. @ Peach..</span>";
-        }
-
-        $overduetaskshtml = '';
-        foreach($s['stops_overduetasks'] as $st) {
-            $overduetaskshtml .= "<span data-index='0' class='stop'>Ponce.. @ Peach..</span>";
-        }
-
-        $uptodatehtml = '';
-        foreach($s['stops_uptodate'] as $st) {
-            $uptodatehtml .= "<span data-index='0' class='stop'>Ponce.. @ Peach..</span>";
+        $givenhtml = '';
+        foreach($s->stops_given as $st) {
+            $givenhtml .= getStopHtml($st, 'no-tasks');
         }
 
         echo <<<SOLDIER_ROW
@@ -220,28 +194,25 @@ $stats = getTimelyTripStats($soldiers);
                                                     <span class='notes'>$notes</span>
                                                 </td>
                                                 <td class='notgiven-td'>$notgivenhtml</td>
-                                                <td class='notask-td'>$notaskshtml</td>
-                                                <td>$pendingtaskshtml</td>
-                                                <td>$overduetaskshtml</td>
-                                                <td>$uptodatehtml</td>
+                                                <td class='notask-td'>$givenhtml</td>
                                                 <td><a href='#' class='addstoplink'>Add Stop</a></td>
                                             </tr>
 SOLDIER_ROW;
     }
 
     function getStopHtml($st, $extraclass) {
-        $stopname = trim($st['name']);
+        $stopname = trim($st->stopname);
         if(empty($stopname)) {
             $stopname = '(no name)';
             $extraclass .= ' noname ';
         }
 
-        $id = $st['id'];
-        $stopid = $st['stopid'];
-        $agency = $st['agency'];
-        $stopgiven = $st['given'] ? 'true' : 'false';
-        $nameonsign = $st['given'] ? $st['nameonsign'] : '';
-        $abandoned = $st['abandoned'];
+        $id = $st->id;
+        $stopid = $st->stopid;
+        $agency = $st->agency;
+        $stopgiven = $st->given ? 'true' : 'false';
+        $nameonsign = $st->given ? $st->nameonsign : '';
+        $abandoned = $st->abandoned;
         
         if(is_null($stopid)) {
             $extraclass .= " nostopid ";
@@ -343,44 +314,11 @@ STOP;
                 <div class='modal-header'>
                     <h4 class='modal-title operation-title'>Register New Soldier</h4>
                 </div>
-                <div class='modal-body'>
-
-                    <form>
-                        <div class='form-group float-label' id='soldiername'>
-                            <label>Name</label>
-                            <span class="error-message"></span>
-                            <input type='text' class='form-control'/>
-                        </div>
-                        <div class='form-group float-label' id='soldieremail'>
-                            <label>Email</label>
-                            <span class="error-message"></span>
-                            <input type='text' class='form-control'/>
-                        </div>
-                        <div class='form-group float-label' id='soldierphone'>
-                            <label>Phone (optional)</label>
-                            <span class="error-message"></span>
-                            <input type='text' class='form-control'/>
-                        </div>
-                        <div class='form-group float-label' id='soldierbusstop'>
-                            <label>Stop to adopt</label>
-                            <span class="error-message"></span>
-                            <input type='text' class='form-control'/>
-                        </div>
-                        <div class='form-group' id='soldieragency'>
-                            <label>Agency</label>
-                            <select><option value='MARTA'>MARTA</option><option value='CCT'>CCT</option><option value='GRTA'>GRTA</option></select>
-                        </div>
-                        <div class='form-group float-label' id='soldiernotes'>
-                            <label>Notes</label>
-                            <span class="error-message"></span>
-                            <input type='text' class='form-control'/>
-                        </div>
-
-                    </form>
+                <div class='modal-body' style='height:500px'>
+                    <iframe src='../register-iframe.php' style='width:100%; height:100%; border:none;'></iframe>
                 </div>
                 <div class='modal-footer'>
-                    <button type='button' class='btn btn-default' data-dismiss='modal'>Cancel</a>
-                    <button type='button' class='btn btn-primary' id='newsoldier-submit'>Register</button>
+                    <button type='button' class='btn btn-default' data-dismiss='modal'>Close</a>
                 </div>
             </div>
         </div>
@@ -465,11 +403,6 @@ STOP;
                             <span class="error-message"></span>
                             <textarea class='form-control'></textarea>
                         </div>
-                        <div class='form-group float-label soldierjoindate'>
-                            <label>Join Date (yyyy-mm-dd) </label>
-                            <span class="error-message"></span>
-                            <input type='text' class='form-control'/>
-                        </div>
                     </form>
                 </div>
                 <div class='modal-footer'>
@@ -491,28 +424,22 @@ STOP;
 
 <?php
 function getTimelyTripStats($soldiers) {
-    
-    function getStopsFromSoldier($s) { 
-        return array_merge(
-            $s['stops_notgiven'], $s['stops_notasks'], $s['stops_pendingtasks'], 
-            $s['stops_overduetasks'], $s['stops_uptodate']
-        );
-    }
-
-    $allstops_2d = array_map("getStopsFromSoldier", $soldiers);
-    $allstops = array();
-
     $nosign_count = 0;
 
-    foreach($allstops_2d as $stopsarr) {
-        foreach($stopsarr as $stop) {
-            if(!$stop['given']) $nosign_count++;
+    $total_stops_adopted = 0;
+    $total_stops_given = 0;
+    $total_stops_notgiven = 0;
 
-            $allstops[] = $stop;
-        }
+    foreach($soldiers as $s) {
+        $total_stops_adopted += count($s->stops);
+        $total_stops_given += count($s->stops_given);
+        $total_stops_notgiven += count($s->stops_notgiven);
     }
 
-    return array('num_soldiers'=>count($soldiers), 'num_stops'=>count($allstops), 'num_nosign'=>$nosign_count);
+    return array('num_soldiers'=>count($soldiers), 
+        'num_stops'=>$total_stops_adopted, 
+        'num_given'=>$total_stops_given,
+        'num_notgiven'=>$total_stops_notgiven);
 }
 
 ?>

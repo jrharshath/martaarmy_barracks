@@ -6,14 +6,25 @@ date_default_timezone_set('America/New_York');
 include ('init_db.php');
 include('crypto.php');
 
-function createUser($name, $email, $password, &$error) {
-	$new = new DateTime();
-	$today = (new DateTime())->format('Y-m-j');
-	return createUserWithDetails($today, $name, $email, $password, '', '', $error);
+function dateTimeFromDb($datetimestr) {
+	return DateTime::createFromFormat('Y-m-j H:i:s', $datetimestr);
+}
+function dateTimeToDb($datetime) {
+	return $datetime->format('Y-m-j H:i:s');
+}
+function booleanFromDb($boolint) {
+	if($boolint==0) return FALSE;
+	else return TRUE;
+}
+function booleanToDb($bool) {
+	if($bool) return 1;
+	else return 0;
 }
 
-function createUserWithDetails($joindatestr, $name, $email, $password, $phone, $notes, &$error) {
+function createOrGetUser($name, $email, $phone, $notes, &$op_result) {
 	global $_DB;
+	$joindatestr = dateTimeToDb(new DateTime());
+
 	$email = strtolower($email);
 
 	if(!filter_var($email, FILTER_VALIDATE_EMAIL)) { 
@@ -21,31 +32,38 @@ function createUserWithDetails($joindatestr, $name, $email, $password, $phone, $
 		return FALSE;
 	}
 
-	$hash = create_hash($password);
-	$stmt = $_DB->prepare("SELECT 1 FROM users WHERE email=?");
+	$stmt = $_DB->prepare("SELECT id FROM users WHERE email=?");
 	$stmt->bind_param('s', $email);
 	$stmt->execute();
 
 	$results = $stmt->get_result();
 	if($results->num_rows != 0) {
-		$error = 'already';
-		return FALSE;
-	}
+		$row = $results->fetch_array(MYSQLI_NUM);
+		$userid = $row[0];
+		// todo update user, return user id
+		$stmt = $_DB->prepare("UPDATE users SET name=?, phone=?, notes=concat(notes, ' ', ?) WHERE id=?");
+		$stmt->bind_param("sssi", $name, $phone, $notes, $userid);
+		$result = $stmt->execute();
+		if(!$result) {
+			$op_result = 'failure';
+			return FALSE;
+		}
+		$op_result = 'already';
+		return $userid;
+	} else {
+		$stmt = $_DB->prepare("INSERT INTO users (name, email, phone, joindate, notes) ".
+	                      "VALUES (?,?,?,?,?)");
+		$stmt->bind_param("sssss", $name, $email, $phone, $joindatestr, $notes);
+		$result = $stmt->execute();
+		if(!$result) {
+			$op_result = 'failure';
+			return FALSE;
+		}
 
-	$ZERO_POINTS = 0;
-
-	$stmt = $_DB->prepare("INSERT INTO users (name, email, phone, joindate, points, passwordhash, notes) ".
-	                      "VALUES (?,?,?,?,0,?,?)");
-	$stmt->bind_param("ssssss", $name, $email, $phone, $joindatestr, $hash, $notes);
-	$result = $stmt->execute();
-	if(!$result) {
-		$error = 'failure';
-		return FALSE;
-	}
-
-	$userid = $_DB->insert_id;
-
-	return $userid;
+		$op_result = 'newuser';
+		$userid = $_DB->insert_id;
+		return $userid;
+	}	
 }
 
 function createNewSession($email, $password) {
@@ -295,6 +313,41 @@ function joinOperation($opid, $userid, $opdata) {
 	$stmt->execute();
 
 	return array('status'=>TRUE, 'addedpoints'=>5);
+}
+
+function addAdoptedStop($userid, $stopname, $stopid, $agency) {
+	global $_DB;
+	
+	$stmt = $_DB->prepare("SELECT 1 FROM users WHERE id=?");
+	$stmt->bind_param('i', $userid);
+	$stmt->execute();
+	$results = $stmt->get_result();
+	
+	if($results->num_rows != 1) {
+		return 'nouserid';
+	}
+
+	$stmt = $_DB->prepare("SELECT 1 FROM adoptedstops WHERE userid=? AND stopid=? AND agency=?");
+	$stmt->bind_param('iss', $userid, $stopid, $agency);
+	$stmt->execute();
+	$results = $stmt->get_result();
+	if($results->num_rows > 0) {
+		return TRUE;
+	}
+
+	if(is_null($stopid) && !is_null($agency)) { return 'stopid_agency_mismatch'; }
+	if(!is_null($stopid) && is_null($agency)) { return 'stopid_agency_mismatch'; }
+
+	$id = get_random_string_len(8);
+	$adoptedtime = dateTimeToDb(new DateTime());
+	
+	$stmt = $_DB->prepare(
+		"INSERT INTO adoptedstops (id, userid, adoptedtime, stopname, stopid, agency) ".
+		"VALUES (?,?,?,?,?,?)");
+	$stmt->bind_param('sissss', $id, $userid, $adoptedtime, $stopname, $stopid, $agency);;
+	$result = $stmt->execute();
+
+	return $result;
 }
 
 function markTaskComplete($taskid, $user) {
