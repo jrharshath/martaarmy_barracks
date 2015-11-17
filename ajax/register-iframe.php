@@ -45,12 +45,21 @@ if($stopmode=='stopids') {
 		$agency = $parts[0];
 		$stopid = $parts[1];
 
-		$result = addAdoptedStop($userid, $stopname, $stopid, $agency);
+		$result = addAdoptedStop($userid, $stopname, $stopid, $agency, $op_result=='already');
 		if(!$result) {
 			finishWith('failure');
 		}
 	}
 
+	$stops_for_email = array();
+	for($i=0; $i<count($stopid_inps); $i++) {
+		$stopid_inp = $stopid_inps[$i];
+		$stopname = $stopnames[$i];
+
+		$stops_for_email[] = "$stopname ($stopid_inp)";
+	}
+
+	sendNewSignupEmail($name, $email, $stops_for_email, $notes, $op_result=='already');
 	finishWith('success');
 
 } else if($stopmode=='stopaddress') {
@@ -66,11 +75,7 @@ if($stopmode=='stopids') {
 	$result = addAdoptedStop($userid, $stoptoadopt, null, null);
 	if(!$result) { finishWith('failure'); }
 
-	if($op_result=='newuser') {
-		sendWelcomeEmail();
-	} else if($op_result=='already') {
-		sendNewStopsAdoptedEmail();
-	}
+	sendNewSignupEmail($name, $email, array($stoptoadopt), $notes, $op_result=='already');
 
 	finishWith('success');
 
