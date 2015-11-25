@@ -1,4 +1,6 @@
 
+create table stopdb
+
 ------
 FINDING DUPLICATE STOPS GIVEN TO PEOPLE
 ------
