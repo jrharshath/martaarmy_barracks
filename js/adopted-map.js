@@ -7,7 +7,7 @@ function drawMap(stopdetails) {
 		.setView([33.7615242074253, -84.38117980957031], 11);
 
 	var icon = L.mapbox.marker.icon({
-      'marker-color': '#f86767'
+      'marker-color': '#f86767', 'marker-size': 'small'
     });
 
 	for(var i=0; i<stopdetails.length; i++) {

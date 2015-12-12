@@ -133,9 +133,7 @@ $(function() {
 			return;
 		}
 
-
-		var url = '../bussign/index_army.php?agency=MARTA&sid='+stopid+'&stopNameOverride=&adopter='+name+'&rank=&weblogo=';
-		window.open(url);
+		window.open('bus-sign/signs.php?sid[]='+agency+'_'+stopid+'&adopters='+name);
 	});
 
 	$('#new-soldier-button').click(function() {
@@ -248,11 +246,149 @@ $(function() {
 
 		var $emails = $selectedSoldiers.find('td.user-data span.email').clone();
 
+		$emails.each(function(i, e) {
+			var $e = $(e);
+			$e.text($e.text() + ';');
+		})
+
 		var $modal = $('#email-list-modal');
 		$modal.find('.modal-body').empty().append($emails);
 		$modal.modal();
 	});
 
+	$('#get-signs').click(function() {
+		$selectedSoldiers = $('#soldiers-table td.selection input[type=checkbox]:checked').closest('tr');
+		if($selectedSoldiers.length==0) { 
+			alert('No soldiers selected! Select the soldiers you want to create signs for first.');
+			return;
+		}
+
+		function createStopForSign(stopid, adopter) {
+			return "<span class='stop-for-sign'><input type='checkbox' checked/>"+
+			"<span class='stopid'>"+stopid+"</span>(<span class='adopter'>"+adopter+"</span>)</span>";
+		}
+
+		var $tbody = $('#signs-to-print-table tbody').empty();
+		var tbody_html = '';
+		
+		$selectedSoldiers.each(function(i,el) {
+			$sol = $(el);
+			
+			var nameTd = "<td>";
+			var soldierName = $sol.find('td.user-data .soldier-name').text();
+			var firstName = soldierName.split(/[\s]+/)[0];
+			nameTd += soldierName+'</td>';
+			
+			var previouslyGivenTd = '<td class="stops-with-signs">';
+			var defaultAdopterName = null;
+			$sol.find('td.notask-td span.stop:not(.nostopid)').each(function(i,el) {
+				var $s = $(el);
+				var agency = $s.find('.agency').text();
+				var stopid = $s.find('.stopid').text();
+				var nameonsign = $s.find('.nameonsign').text();
+				if(nameonsign.length==0) {
+					nameonsign = firstName;
+				} else {
+					if(defaultAdopterName===null) { defaultAdopterName = nameonsign; }
+				}
+				previouslyGivenTd += createStopForSign(agency+'_'+stopid, nameonsign);
+			});
+			previouslyGivenTd += "</td>";
+
+			var neverGivenTd = "<td class='stops-without-signs'>";
+			$sol.find('td.notgiven-td span.stop:not(.nostopid)').each(function(i,el) {
+				var $s = $(el);
+				var agency = $s.find('.agency').text();
+				var stopid = $s.find('.stopid').text();
+				var nameonsign = $s.find('.nameonsign').text();
+				if(nameonsign.length==0) {
+					nameonsign = (defaultAdopterName!==null) ? defaultAdopterName : firstName;
+				}
+				neverGivenTd += createStopForSign(agency+'_'+stopid, nameonsign);
+			});
+			neverGivenTd += '</td>';
+			
+			tbody_html += "<tr>"+nameTd + neverGivenTd + previouslyGivenTd + "</tr>";
+		});
+
+		$tbody.html(tbody_html);
+
+		var $modal = $('#get-signs-modal');
+		$modal.modal();
+	});
+
+	$('#get-signs-modal button.get-signs-ok-button').click(function() {
+		var totalSigns = $('#signs-to-print-table input[type=checkbox]:checked').length;
+		var defaultBatchSize = 10;
+
+		var batchSize = defaultBatchSize;
+
+		if(totalSigns > defaultBatchSize) {
+			var input = prompt('We\'re about to create a LOT of signs. How many signs do you want per PDF?', defaultBatchSize);
+			if(input===null) { 
+				// cancelled
+				return;
+			}
+			input = parseInt(batchSize);
+			if(!isNaN(input)) {
+				batchSize = input;
+			} else {
+				alert('Invalid number entered! Using '+defaultBatchSize+' as default');
+			}
+		}		
+
+		var urlArgs = '';
+		var count = 0;
+		$('#signs-to-print-table input[type=checkbox]:checked').closest('span.stop-for-sign').each(function(i,el) {
+			var $s = $(el);
+			var stopid = $s.find(".stopid").text();
+			var adopter = $s.find(".adopter").text();
+
+			urlArgs += 'sids[]='+stopid+'&adopters[]='+adopter+'&';
+			count ++;
+
+			if(count>batchSize) {
+				window.open('bus-sign/signs.php?'+urlArgs);
+				urlArgs = '';
+				count = 0;
+			}
+		})
+
+		if(urlArgs.length != 0) {
+			window.open('bus-sign/signs.php?'+urlArgs);
+		}
+	})
+
+	$('#get-signs-modal button.copy-stopids').click(function() {
+		$('#signs-to-print-table input[type=checkbox]:checked').closest('span.stop-for-sign').each(function(i,el) {
+			var $s = $(el);
+			var stopid = $s.find(".stopid").text().split('_');
+			var adopter = $s.find(".adopter").text();
+			console.log(stopid[0] +'\t' + stopid[1] + '\t' + adopter);
+		})
+		alert('check the browser console (if you are using chrome) and copy the values.');
+	})
+
+	$('#select-never-given-signs').click(function(e) {
+		e.preventDefault();
+		$('#signs-to-print-table td.stops-without-signs input[type=checkbox]').prop('checked', true).change();
+		return false;
+	});
+	$('#deselect-never-given-signs').click(function(e) {
+		e.preventDefault();
+		$('#signs-to-print-table td.stops-without-signs input[type=checkbox]').prop('checked', false).change();
+		return false;
+	});
+	$('#select-previously-given-signs').click(function(e) {
+		e.preventDefault();
+		$('#signs-to-print-table td.stops-with-signs input[type=checkbox]').prop('checked', true).change();
+		return false;
+	});
+	$('#deselect-previously-given-signs').click(function(e) {
+		e.preventDefault();
+		$('#signs-to-print-table td.stops-with-signs input[type=checkbox]').prop('checked', false).change();
+		return false;
+	});
 
 	$curr_modal_soldier = null;
 

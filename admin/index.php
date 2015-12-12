@@ -143,6 +143,7 @@ $stats = getTimelyTripStats($soldiers);
                             <div class="panel-body">
                                 <div class="text-left">
                                     <button id='get-emails' class='btn btn-primary'><i class='fa fa-envelope'></i> Get Emails</button>
+                                    <button id='get-signs' class='btn btn-primary'><i class='fa fa-envelope'></i> Get Signs</button>
                                     <p></p>
                                 </div>
                                 <div class="table-responsive">
@@ -422,6 +423,31 @@ STOP;
         </div>
     </div>
 
+    <div class='modal fade' id='get-signs-modal'>
+        <div class="modal-dialog">
+            <div class='modal-content'>
+                <div class='modal-header'>
+                    <h4 class='modal-title operation-title'>Create Signs</h4>
+                    <p>These are the signs that are going to be created</p>
+                </div>
+                <div class='modal-body'>
+                    <table id='signs-to-print-table' class="table table-bordered table-hover table-striped">
+                        <thead><tr>
+                        <th>Adopter Name</th>
+                        <th>Stops with signs NEVER given<br/> <a id='select-never-given-signs' href='#'>All</a> | <a id='deselect-never-given-signs' href='#'>None</a></th>
+                        <th>Stops with signs previously given <br/> <a id='select-previously-given-signs' href='#'>All</a> | <a id='deselect-previously-given-signs' href='#'>None</a></th>
+                        </tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class='modal-footer'>
+                    <button type='button' class='btn btn-default' data-dismiss='modal'>Cancel</a>
+                    <button type='button' class='btn btn-default copy-stopids'>Copy Stopids</a>
+                    <button type='button' class='btn btn-primary get-signs-ok-button'>Okay, Get PDF</a>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <script type="text/javascript" src="../jslib/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="../jslib/bootstrap/js/bootstrap.min.js"></script>

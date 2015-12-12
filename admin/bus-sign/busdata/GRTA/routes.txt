@@ -1,0 +1,27 @@
+agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color,route_bikes_allowed,route_id
+GRTA,400,Cumming - North Springs and Downtown,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=45&Itemid=75,f70505,,0,GRTA_5634
+GRTA,408,Doraville - Johns Creek Parkway,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=46&Itemid=75,f70505,,0,GRTA_5639
+GRTA,411,Hamilton Mill/Mall of GA - Midtown Atlanta ,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=48&Itemid=75,f70505,,0,GRTA_5646
+GRTA,413,Hamilton Mill - Downtown Atlanta ,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=50&Itemid=75,f70505,,0,GRTA_5649
+GRTA,416,Dacula - Downtown Atlanta ,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=51&Itemid=75,f70505,,0,GRTA_5651
+GRTA,420,West Conyers - Downtown Atlanta,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=53&Itemid=75,1400ff,FFFFFF,0,GRTA_5655
+GRTA,421,West Conyers - Midtown Atlanta,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=54&Itemid=75,1400ff,FFFFFF,0,GRTA_5658
+GRTA,422,Panola Rd - Downtown Atlanta,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=55&Itemid=75,1400ff,FFFFFF,0,GRTA_5661
+GRTA,423,East Conyers/Panola Rd - Midtown Atlanta,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=56&Itemid=75,1400ff,FFFFFF,0,GRTA_5664
+GRTA,424,Stone Mountain - Downtown Atlanta,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=57&Itemid=75,1400ff,FFFFFF,0,GRTA_5667
+GRTA,425,East Conyers - Downtown Atlanta ,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=58&Itemid=75,1400ff,FFFFFF,0,GRTA_5669
+GRTA,428,Panola Rd - Perimeter Center,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=59&Itemid=75,1400ff,FFFFFF,0,GRTA_5672
+GRTA,430,McDonough - Downtown and Midtown Atlanta,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=60&Itemid=75,087d13,,0,GRTA_5675
+GRTA,431,Stockbridge - Midtown Atlanta,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=61&Itemid=75,087d13,,0,GRTA_5680
+GRTA,432,Stockbridge - Downtown Atlanta ,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=62&Itemid=75,087d13,,0,GRTA_5683
+GRTA,440,Hampton/Jonesboro - Downtown Atlanta,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=63&Itemid=75,087d13,,0,GRTA_5686
+GRTA,441,Jonesboro - Midtown Atlanta,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=64&Itemid=75,087d13,,0,GRTA_5691
+GRTA,442,Riverdale - Downtown Atlanta,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=65&Itemid=75,087d13,,0,GRTA_5694
+GRTA,450,Newnan - Downtown Atlanta,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=66&Itemid=75,087d13,,0,GRTA_5697
+GRTA,451/55,Midtown/Downtown Atlanta - Union City/Newnan,PM only,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=67&Itemid=75,087d13,,0,GRTA_5700
+GRTA,451,Newnan - Midtown Atlanta ,AM only,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=67&Itemid=75,087d13,,0,GRTA_5701
+GRTA,455,Union City - Downtown Atlanta,AM only,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=68&Itemid=75,087d13,,0,GRTA_5702
+GRTA,460,Douglasville - Downtown Atlanta,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=69&Itemid=75,00e0ff,,0,GRTA_5704
+GRTA,461/62,Douglasville - Downtown/Midtown Atlanta,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=70&Itemid=75,00e0ff,,0,GRTA_5707
+GRTA,490,Canton/Woodstock - Downtown Atlanta,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=76&Itemid=75,6d87c9,,0,GRTA_5709
+GRTA,491,Woodstock - Midtown Atlanta,,3,http://www.xpressga.com/index.php?option=com_content&task=view&id=77&Itemid=75,6d87c9,,0,GRTA_5713

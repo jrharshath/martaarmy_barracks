@@ -7,7 +7,7 @@ init_db();
 
 $results = $_DB->query(
 	"SELECT db.name, db.lat, db.lng FROM adoptedstops s, stopdb db ".
-	"WHERE s.agency='MARTA' AND s.stopid = db.stopid");
+	"WHERE s.agency='MARTA' AND s.stopid = db.stopid AND s.given=1");
 
 if(!$results) {
 	exit(json_encode(array('status'=>'failure')));
