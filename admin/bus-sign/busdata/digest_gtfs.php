@@ -86,11 +86,12 @@ function mapStopidToTripids($agency) {
 	$precompiled_filename = $agency.'/stopid_to_tripids_precompiled.json';
 
 	if(file_exists($precompiled_filename)) {
-		if (($stopid_to_tripids_precompiled = fopen("stopid_to_tripids_precompiled.json", "r")) === FALSE) {
+		if (($precompiled_file = fopen($precompiled_filename, "r")) === FALSE) {
 			echo "Could not read $precompiled_filename, proceeding to digest entire file\n";
 		} else {
 			echo "Reading in precompiled stopid_to_tripds data for $agency\n";
-			$stopid_to_tripids = json_decode(fgets($stopid_to_tripids_precompiled));
+			$stopid_to_tripids = json_decode(fgets($precompiled_file));
+			fclose($precompiled_file);
 			return $stopid_to_tripids;
 		}
 	}
@@ -133,7 +134,7 @@ function mapStopidToTripids($agency) {
 	}
 	fclose($stop_times);
 
-	if($precompiled_file = fopen($precompiled_filename, 'w') === FALSE) {
+	if(($precompiled_file = fopen($precompiled_filename, 'w')) === FALSE) {
 		echo "Could not save precompiled stopid_to_tripds data. Continuing as normal.";
 	} else {
 		echo "Saving precompiled stopid_to_tripds data.\n";
@@ -183,6 +184,7 @@ function mapTripidsRouteidsAndShapeids($agency, &$tripid_to_routeid, &$tripid_to
 	fclose($trips);
 	echo "Done.\n";
 }
+function sortBySeq($pt1, $pt2) { return $pt1->seq - $pt2->seq; } // utility for next function
 function processShapeCoords($agency) {
 	$shape_filename = $agency . "/shapes.txt";
 	echo "processing $shape_filename\n";
@@ -224,7 +226,6 @@ function processShapeCoords($agency) {
 	fclose($shapes);
 
 	echo "Sorting the shape data...\n";
-	function sortBySeq($pt1, $pt2) { return $pt1->seq - $pt2->seq; }
 	foreach($shapeid_to_shapecoords as $shapeid=>$points_arr) {
 		usort($points_arr, 'sortBySeq');
 	}
@@ -246,7 +247,7 @@ function processStopData($agency) {
 	$LAT_INDEX = NULL;
 	$LNG_INDEX = NULL;
 	
-	$num = 0;
+	$num = 1;
 	while(($row = fgetcsv($stops, 1000, ",")) !== FALSE) {
 		if($num == 1) { 
 			$STOPID_INDEX = array_search('stop_id', $row);
@@ -286,7 +287,7 @@ function processRouteData($agency) {
 	}
 
 	$route_data = array();
-	$num = 0;
+	$num = 1;
 	while(($row = fgetcsv($routes, 1000, ",")) !== FALSE) {
 		if($num == 1) { 
 			$ROUTEID_INDEX = array_search('route_id', $row);
@@ -331,11 +332,13 @@ foreach($agencies as $agency) {
 	$BUSDATA[$agency] = generateDataForAgency($agency);
 }
 
-if($busdatajs_file = fopen('busdata.js', 'w') === FALSE) {
+if(($busdatajs_file = fopen('busdata.js', 'w')) === FALSE) {
 	die("Could not save busdata.js contents!");
 } else {
 	echo "Saving busdata.js JSON data...\n";
+	fwrite($busdatajs_file, "var BUSDATA = ");
 	fwrite($busdatajs_file, json_encode($BUSDATA));
+	fwrite($busdatajs_file, ";\n");
 	fclose($busdatajs_file);
 	echo "Saved. Enjoy using busdata.js!\n";
 }

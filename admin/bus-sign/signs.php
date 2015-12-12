@@ -228,8 +228,7 @@ function printPageForStop($sign) {
 	echo "</div>"; // </.buses>
 	
 	printPageFooter($sign);
-	echo "</div>";
-	echo "<div style='clear:both; page-break-after: always;'><" . "/div>";
+	echo "<div style='clear:both; page-break-after: always;'></div>";
 }
 
 function printPageHeader($sign) {
@@ -367,25 +366,23 @@ function printPageFooter($sign) {
 	$adopter = $sign->adopter;
 
 	echo <<<EOT
-		<div class='footer'>
-			<div class='disclaimer'>
-				*Trip times are approximate, may change without notice, and may vary with road conditions, events, and holidays. Data provided by MARTA and OneBusAway.
-				<br /><span class='alt-lang'>*Los horarios son indicativos, pueden cambiar sin aviso previo y cambiar en funci&oacute;n de las condiciones de circulaci&oacute;n, eventos, y d&iacute;as festivos.</span> 
-			</div>
-
-			<p class='adopter'>This stop has been adopted by <span class='adopterName'>$adopter</span></p>
-		
-			<div class='QR'>
-				<img src='qr.php?p=http://192.168.0.2/bussign/qr_fwd.php?s=$sid_full'/>
-				<p><span class='big'>SCAN HERE &#x25BA;</span><br/>to get live arrival times<br />on your mobile device.</p>
-			</div>
-				
-			<p class='adoptPitch'>
-				<b>YOU CAN ADOPT A STOP TOO!</b><br/>MARTAArmy.org/<b>join</b>an<b>army</b>
-			</p>
+	<div class='footer'>
+		<div class='disclaimer'>
+			*Trip times are approximate, may change without notice, and may vary with road conditions, events, and holidays. Data provided by MARTA and OneBusAway.
+			<br /><span class='alt-lang'>*Los horarios son indicativos, pueden cambiar sin aviso previo y cambiar en funci&oacute;n de las condiciones de circulaci&oacute;n, eventos, y d&iacute;as festivos.</span> 
 		</div>
-	</div></div><div style='clear:both; page-break-after: always;'></div>		
-	</div><div style='clear:both; page-break-after: always;'></div>
+
+		<p class='adopter'>This stop has been adopted by <span class='adopterName'>$adopter</span></p>
+	
+		<div class='QR'>
+			<img src='qr.php?p=http://192.168.0.2/bussign/qr_fwd.php?s=$sid_full'/>
+			<p><span class='big'>SCAN HERE &#x25BA;</span><br/>to get live arrival times<br />on your mobile device.</p>
+		</div>
+			
+		<p class='adoptPitch'>
+			<b>YOU CAN ADOPT A STOP TOO!</b><br/>MARTAArmy.org/<b>join</b>an<b>army</b>
+		</p>
+	</div>
 EOT;
 }
 
@@ -471,8 +468,10 @@ $(function() {
 
 	$('.map-container').each(function(i,el) {
 		var mapid = $(el).attr('id');
-		var stopid = mapid.split('_')[2];
-		drawMapForStopId(mapid, stopid);
+		var mapid_parts = mapid.split('_');
+		var agency = mapid_parts[1];
+		var stopid = mapid_parts[2];
+		drawMapForStopId(mapid, agency, stopid);
 	});
 })
 </script>

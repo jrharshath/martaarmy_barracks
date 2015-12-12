@@ -5,11 +5,11 @@ body { margin: 0; font-family: "Sweet Sans Pro", "Source Sans Pro", "Montserrat"
 .page12 { position: relative; overflow:hidden; height: 1700px; width:1100px; }
 .page34 { position: relative; overflow:hidden; height: 1100px; width:1700px; }
 
-.header { background-color: #000; height:130px; -webkit-print-color-adjust: exact; }
+.header { background-color: #000; height:130px; -webkit-print-color-adjust: exact; position: relative; }
 .header .logo { width: 390px; float: left; margin-top: 15px; }
 .header .header-content { float: left; width: 700px; }
 .header .header-content h1 { margin: 15px 0 0 0; padding: 0; color: #fff; text-align: right; font-size: 30px; }
-.header .header-content .info { margin: 15px 0 0 0; padding: 0; color: #fff; font-size: 13px; color: #ddd; }
+.header .header-content .info { margin: 15px 0 0 0; padding: 0; color: #fff; font-size: 13px; color: #ddd; position: absolute; top: 60px; }
 .header .header-content .info p { float: left; text-align: right; }
 .header .header-content .info p.verify { width: 564px; padding-right: 15px; border-right: 1px solid #ddd;}
 .header .header-content .info p.stopid { width: 120px; }
